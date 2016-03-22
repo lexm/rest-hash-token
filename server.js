@@ -4,14 +4,14 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var loginRouter = express.Router();
-var userRouter = express.Router();
+var appleRouter = express.Router();
 
 require('./routes/login_route')(loginRouter);
-require('./routes/user_route')(userRouter)
+require('./routes/apple_route')(appleRouter);
 
 app.use(bodyParser.json());
 app.use('/login', loginRouter);
-app.use('/users', userRouter);
+app.use('/apples', appleRouter);
 
 
 
