@@ -3,7 +3,7 @@
 var jwt = require('jsonwebtoken');
 var User = require('../models/user');
 module.exports = (Router) => {
-  Router.post('/login', (req, res) => {
+  Router.post('/', (req, res) => {
     console.log(req.headers.authorization);
     var authorizationArray = req.headers.authorization.split(' ');
     var method = authorizationArray[0];
