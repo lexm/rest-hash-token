@@ -1,5 +1,6 @@
 'use strict';
 var User = require(__dirname + '/../models/user');
+var mongoose = require('mongoose');
 
 module.exports = (router) => {
 
@@ -7,13 +8,21 @@ module.exports = (router) => {
   .post((req, res) => {
     var newUser = new User(req.body);
     newUser.save((err, user) => {
-      res.write('Added user ' + user.name);
-      res.end();
+      if(err) {
+        console.log(err);
+      } else {
+        console.log('Added user ' + user.name);
+        res.write('Added user ' + user.name);
+        res.end();
+      }
     });
+    console.log(newUser);
   })
   .get((req, res) => {
-    console.log('/admin GET gotten');
-    res.write('got it');
-    res.end();
+    User.find({}, function (err, users) {
+      if(err) {console.log(err);}
+      res.json(users);
+      res.end();
+    });
   });
 };

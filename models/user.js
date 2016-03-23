@@ -3,6 +3,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+var config = require(__dirname + '/../config/dbconfig');
 
 var userSchema = mongoose.Schema({
   name: String,
@@ -16,12 +17,12 @@ userSchema.pre('save', function(next) {
 });
 
 userSchema.methods.compareHash = function(password) {
-  return bcrypt.compareSync(password, this.password)
+  return bcrypt.compareSync(password, this.password);
 };
 
 userSchema.methods.generateToken = function() {
-  jwt.sign({_id: this._id, group: group}, 'some phrase');
+  return jwt.sign({_id: this._id, group: this.group}, config.secret);
 };
 
-var User = mongoose.model('User', userSchema)
+var User = mongoose.model('User', userSchema);
 module.exports = User;
