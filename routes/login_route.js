@@ -11,7 +11,8 @@ module.exports = (Router) => {
     var name = authArray[0];
     var password = authArray[1];
     console.log(authArray);
-    User.find({name: name}, function(err, user) {
+    User.find({'name': name}, function(err, user) {
+      console.log(user);
       if (err) console.log(err);
       var valid = user[0].compareHash(password);
       console.log(valid, user);
