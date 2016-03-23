@@ -6,9 +6,15 @@ var jwt = require('jsonwebtoken');
 var config = require(__dirname + '/../config/dbconfig');
 
 var userSchema = mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   group: String,
-  password: String
+  password: {
+    type: String,
+    required: true
+  }
 });
 
 userSchema.pre('save', function(next) {
