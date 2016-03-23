@@ -19,17 +19,17 @@ var testWrongPass = 'whinehoose';
 require('../server');
 
 describe('testing login', function() {
-  // it('should be able to create a new user', function() {
-  //   console.log(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`);
-  //   request('localhost:3000')
-  //   .post('/admin')
-  //   .send(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`)
-  //   .end(function(err, res) {
-  //     expect(err).to.eql(null);
-  //     expect(res.text).to.eql(`Added user ${testUser}`);
-  //     done();
-  //   });
-  // });
+  it('should be able to create a new user', function() {
+    console.log(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`);
+    request('localhost:3000')
+    .post('/admin')
+    .send(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`)
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.text).to.eql(`Added user ${testUser}`);
+      done();
+    });
+  });
   it('should be able to login with new user/password', function(done) {
     request('localhost:3000')
     .post('/login')
