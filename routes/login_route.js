@@ -10,9 +10,11 @@ module.exports = (Router) => {
     var authArray = new Buffer(base64ed, 'base64').toString().split(':');
     var name = authArray[0];
     var password = authArray[1];
+    console.log(authArray);
     User.find({name: name}, function(err, user) {
-      // var foundUser = user[0];
+      if (err) console.log(err);
       var valid = user[0].compareHash(password);
+      console.log(valid, user);
       if(!valid) {
         return res.json({status: 'failure'});
       }
