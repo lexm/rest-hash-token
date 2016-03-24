@@ -10,8 +10,6 @@ chai.use(chaiHttp);
 var request = chai.request;
 var expect = chai.expect;
 
-var User = require('../models/user');
-
 var testUser = 'amy';
 var testPass = 'winehouse';
 var testWrongUser = 'amie';
@@ -27,10 +25,10 @@ describe('testing login', function() {
   });
 
   it('should be able to create a new user', function(done) {
-    console.log(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`);
+    var userParams = JSON.parse(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`);
     request('localhost:3000')
     .post('/admin')
-    .send(`{"name": "${testUser}", "group": "users", "password": "${testPass}"}`)
+    .send(userParams)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.text).to.eql(`Added user ${testUser}`);
@@ -53,9 +51,10 @@ describe('testing login', function() {
 
 
   it('should fail with incorrect password', function(done) {
+    let authValue = 'basic ' + (new Buffer(testUser + ':' + testWrongPass).toString('base64'));
     request('localhost:3000')
     .post('/login')
-    .set('Authorization', 'basic ' + (new Buffer(testUser + ':' + testWrongPass).toString('base64')))
+    .set('Authorization', authValue)
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('status');
@@ -64,10 +63,12 @@ describe('testing login', function() {
     });
   });
   it('should fail with incorrect username', function(done) {
+    let authValue = 'basic ' + (new Buffer(testWrongUser + ':' + testPass).toString('base64'));
     request('localhost:3000')
     .post('/login')
-    .set('Authorization', 'basic ' + (new Buffer(testWrongUser + ':' + testPass).toString('base64')))
+    .set('Authorization', authValue)
     .end(function(err, res) {
+      console.log();
       expect(err).to.eql(null);
       expect(res.body).to.have.property('status');
       expect(res.body.status).to.eql('failure');

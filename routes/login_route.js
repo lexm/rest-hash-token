@@ -13,8 +13,10 @@ module.exports = (Router) => {
     console.log(authArray);
     User.find({'name': name}, function(err, user) {
       console.log(user);
-      if (err) console.log(err);
-      var valid = user[0].compareHash(password);
+      if (err) {
+        return res.json({status: 'error'});
+      }
+      var valid = (!!user.length && user[0].compareHash(password));
       console.log(valid, user);
       if(!valid) {
         return res.json({status: 'failure'});
